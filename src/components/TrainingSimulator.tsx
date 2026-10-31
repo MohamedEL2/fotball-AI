@@ -94,6 +94,19 @@ export const TrainingSimulator: React.FC<TrainingSimulatorProps> = ({
     }
   };
 
+  const startTensorSession = (tensorVolume: number) => {
+    setMatchesTrained(tensorVolume);
+    setTrainSetSize(Math.floor(tensorVolume * 0.8));
+    setValSetSize(Math.floor(tensorVolume * 0.2));
+    setSelectedMatchScale(tensorVolume);
+    setIsPlaying(true);
+    setPipelineStage('training');
+    setCurrentEpoch(0);
+    setEpochLogs([]);
+    setSavedArtifacts({ weightsSaved: false, featureImportanceSaved: false, metricsSaved: false });
+    setSimulatedVramMb(tensorVolume >= 200000 ? 3840 : 2100);
+  };
+
   const startFromScratch = () => {
     setIsPlaying(true);
     setPipelineStage('ingesting');
@@ -232,6 +245,41 @@ export const TrainingSimulator: React.FC<TrainingSimulatorProps> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
+            {/* 1-Click Tensor Session Quick Launch Buttons */}
+            <div className="flex items-center gap-1.5 p-1 bg-slate-950 rounded-lg border border-slate-800 text-xs font-mono mr-2">
+              <span className="text-[11px] text-slate-400 px-1 font-sans">Session Tensors:</span>
+              <button
+                onClick={() => startTensorSession(50000)}
+                className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                  matchesTrained === 50000 && isPlaying
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-900 text-emerald-400 border border-slate-700 hover:bg-slate-800'
+                }`}
+              >
+                ⚡ 50k Tensors
+              </button>
+              <button
+                onClick={() => startTensorSession(100000)}
+                className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                  matchesTrained === 100000 && isPlaying
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-900 text-blue-400 border border-slate-700 hover:bg-slate-800'
+                }`}
+              >
+                ⚡ 100k Tensors
+              </button>
+              <button
+                onClick={() => startTensorSession(238858)}
+                className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                  matchesTrained >= 200000 && isPlaying
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-900 text-purple-400 border border-slate-700 hover:bg-slate-800'
+                }`}
+              >
+                ⚡ Full 238k Master
+              </button>
+            </div>
+
             {!isPlaying ? (
               <>
                 <button
@@ -293,7 +341,9 @@ export const TrainingSimulator: React.FC<TrainingSimulatorProps> = ({
                 <Check className="w-3 h-3 text-emerald-400" />
               )}
             </div>
-            <div className="text-[11px] text-slate-400 font-mono mt-0.5">474.8k matches</div>
+            <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+              {matchesTrained.toLocaleString()} matches ({(matchesTrained * 2).toLocaleString()} dual tensors)
+            </div>
           </div>
 
           <div
