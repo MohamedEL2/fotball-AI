@@ -2,108 +2,132 @@
   "status": "TRAINED",
   "model_type": "TemporalFusionTransformer",
   "dataset": "adamgbor/club-football-match-data-2000-2025",
-  "matches_trained": 35000,
-  "train_set_size": 28000,
-  "val_set_size": 7000,
-  "best_rps_loss": 0.2133,
-  "final_accuracy": 0.457,
+  "matches_trained": 238858,
+  "train_set_size": 191086,
+  "val_set_size": 47772,
+  "best_rps_loss": 0.2223,
+  "final_accuracy": 0.448,
   "history": [
     {
       "epoch": 1,
       "trainLoss": 1.279,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2224,
+      "valAccuracy": 0.448,
       "learningRate": 0.0047
     },
     {
       "epoch": 2,
       "trainLoss": 1.279,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2224,
+      "valAccuracy": 0.448,
       "learningRate": 0.004418
     },
     {
       "epoch": 3,
       "trainLoss": 1.2791,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.004153
     },
     {
       "epoch": 4,
       "trainLoss": 1.2791,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.003904
     },
     {
       "epoch": 5,
       "trainLoss": 1.2791,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.00367
     },
     {
       "epoch": 6,
       "trainLoss": 1.2792,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.003449
     },
     {
       "epoch": 7,
       "trainLoss": 1.2792,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.003242
     },
     {
       "epoch": 8,
       "trainLoss": 1.2792,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.003048
     },
     {
       "epoch": 9,
       "trainLoss": 1.2792,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.002865
     },
     {
       "epoch": 10,
       "trainLoss": 1.2793,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.002693
     },
     {
       "epoch": 11,
       "trainLoss": 1.2793,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.002531
     },
     {
       "epoch": 12,
       "trainLoss": 1.2793,
-      "valLoss": 1.1882,
-      "valRpsLoss": 0.2133,
-      "valAccuracy": 0.457,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
       "learningRate": 0.00238
+    },
+    {
+      "epoch": 13,
+      "trainLoss": 1.2793,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
+      "learningRate": 0.002237
+    },
+    {
+      "epoch": 14,
+      "trainLoss": 1.2794,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
+      "learningRate": 0.002103
+    },
+    {
+      "epoch": 15,
+      "trainLoss": 1.2794,
+      "valLoss": 1.2794,
+      "valRpsLoss": 0.2223,
+      "valAccuracy": 0.448,
+      "learningRate": 0.001976
     }
   ],
-  "trained_at": "2026-10-31T20:17:43.800911"
+  "trained_at": "2026-10-31T20:29:39.873984"
 }

@@ -44,12 +44,21 @@ export const TrainingSimulator: React.FC<TrainingSimulatorProps> = ({
 
   const timerRef = useRef<number | null>(null);
 
+  const [matchesTrained, setMatchesTrained] = useState<number>(238858);
+  const [trainSetSize, setTrainSetSize] = useState<number>(191086);
+  const [valSetSize, setValSetSize] = useState<number>(47772);
+  const [selectedMatchScale, setSelectedMatchScale] = useState<number>(238858);
+
   // Initial load: check for real trained run in /data/tft_live_trained_metrics.json
   useEffect(() => {
     fetch('/data/tft_live_trained_metrics.json')
       .then((res) => res.json())
       .then((data) => {
         if (data && data.history && data.history.length > 0) {
+          if (data.matches_trained) setMatchesTrained(data.matches_trained);
+          if (data.train_set_size) setTrainSetSize(data.train_set_size);
+          if (data.val_set_size) setValSetSize(data.val_set_size);
+
           const logs: EpochLog[] = data.history.map((h: any) => ({
             epoch: h.epoch,
             trainLoss: h.trainLoss,
@@ -68,39 +77,43 @@ export const TrainingSimulator: React.FC<TrainingSimulatorProps> = ({
         }
       })
       .catch(() => {
-        // Fallback default curve
         const initialLogs: EpochLog[] = [
           { epoch: 1, trainLoss: 0.542, valLoss: 0.518, valRpsLoss: 0.2310, valAccuracy: 0.512, valLogLoss: 0.982, learningRate: 0.001, durationSec: 104 },
           { epoch: 2, trainLoss: 0.485, valLoss: 0.462, valRpsLoss: 0.2185, valAccuracy: 0.548, valLogLoss: 0.934, learningRate: 0.001, durationSec: 102 },
           { epoch: 3, trainLoss: 0.441, valLoss: 0.428, valRpsLoss: 0.2090, valAccuracy: 0.575, valLogLoss: 0.898, learningRate: 0.001, durationSec: 103 },
         ];
         setEpochLogs(initialLogs);
-        setCurrentEpoch(3);
       });
   }, []);
 
-  const startPipeline = () => {
+  const continueTraining = () => {
     setIsPlaying(true);
-    if (pipelineStage === 'idle' || pipelineStage === 'completed') {
-      setPipelineStage('ingesting');
-      setEpochLogs([]);
-      setCurrentEpoch(0);
-      setSavedArtifacts({ weightsSaved: false, featureImportanceSaved: false, metricsSaved: false });
-      setSimulatedVramMb(1420);
-
-      setTimeout(() => {
-        setPipelineStage('features');
-        setSimulatedVramMb(2240);
-        setTimeout(() => {
-          setPipelineStage('dataloaders');
-          setSimulatedVramMb(3180);
-          setTimeout(() => {
-            setPipelineStage('training');
-            setSimulatedVramMb(3840);
-          }, 1200);
-        }, 1200);
-      }, 1200);
+    setPipelineStage('training');
+    if (currentEpoch >= config.maxEpochs) {
+      setConfig((prev) => ({ ...prev, maxEpochs: prev.maxEpochs + 10 }));
     }
+  };
+
+  const startFromScratch = () => {
+    setIsPlaying(true);
+    setPipelineStage('ingesting');
+    setEpochLogs([]);
+    setCurrentEpoch(0);
+    setSavedArtifacts({ weightsSaved: false, featureImportanceSaved: false, metricsSaved: false });
+    setSimulatedVramMb(1420);
+
+    setTimeout(() => {
+      setPipelineStage('features');
+      setSimulatedVramMb(2240);
+      setTimeout(() => {
+        setPipelineStage('dataloaders');
+        setSimulatedVramMb(3180);
+        setTimeout(() => {
+          setPipelineStage('training');
+          setSimulatedVramMb(3840);
+        }, 800);
+      }, 800);
+    }, 800);
   };
 
   const pausePipeline = () => {
@@ -218,22 +231,38 @@ export const TrainingSimulator: React.FC<TrainingSimulatorProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {!isPlaying ? (
-              <button
-                onClick={startPipeline}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg transition-colors cursor-pointer shadow-sm"
-              >
-                <Play className="w-3.5 h-3.5 fill-current" />
-                <span>{currentEpoch > 0 ? 'Resume Training' : 'Start Pipeline'}</span>
-              </button>
+              <>
+                <button
+                  onClick={continueTraining}
+                  className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg transition-colors cursor-pointer shadow-sm"
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  <span>
+                    {pipelineStage === 'completed'
+                      ? `Continue Training (Epoch ${currentEpoch + 1}+)`
+                      : currentEpoch > 0
+                      ? 'Resume Training'
+                      : 'Start Pipeline'}
+                  </span>
+                </button>
+                {currentEpoch > 0 && (
+                  <button
+                    onClick={startFromScratch}
+                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer border border-slate-700"
+                  >
+                    <span>Retrain from Scratch</span>
+                  </button>
+                )}
+              </>
             ) : (
               <button
                 onClick={pausePipeline}
                 className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-amber-600 hover:bg-amber-500 rounded-lg transition-colors cursor-pointer"
               >
                 <Pause className="w-3.5 h-3.5 fill-current" />
-                <span>Pause Training</span>
+                <span>Pause Training (Running Epoch {currentEpoch})</span>
               </button>
             )}
 
@@ -488,15 +517,64 @@ export const TrainingSimulator: React.FC<TrainingSimulatorProps> = ({
 
         {/* Right 2 Columns: Live Loss Curves, Metrics, Artifacts */}
         <div className="lg:col-span-2 space-y-5">
+          {/* Match Volume & One-Time Run Banner */}
+          <div className="p-3.5 bg-emerald-950/30 rounded-xl border border-emerald-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-white text-sm">
+                  Active Dataset: {matchesTrained.toLocaleString()} Matches
+                </span>
+                <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">
+                  {matchesTrained >= 200000 ? 'Full One-Time Master Dataset' : '50k Batch Slice'}
+                </span>
+              </div>
+              <div className="text-slate-300 text-[11px] mt-0.5">
+                <strong>1 Epoch = 1 Full Pass</strong> through all {matchesTrained.toLocaleString()} matches ({trainSetSize.toLocaleString()} train / {valSetSize.toLocaleString()} val).
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5 font-mono text-[11px]">
+              <span className="text-slate-400">Scale:</span>
+              <button
+                onClick={() => {
+                  setMatchesTrained(50000);
+                  setTrainSetSize(40000);
+                  setValSetSize(10000);
+                }}
+                className={`px-2 py-1 rounded border transition-colors cursor-pointer ${
+                  matchesTrained === 50000
+                    ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400'
+                    : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                }`}
+              >
+                50k Matches
+              </button>
+              <button
+                onClick={() => {
+                  setMatchesTrained(238858);
+                  setTrainSetSize(191086);
+                  setValSetSize(47772);
+                }}
+                className={`px-2 py-1 rounded border transition-colors cursor-pointer ${
+                  matchesTrained >= 200000
+                    ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400'
+                    : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                }`}
+              >
+                All 238,858 Matches
+              </button>
+            </div>
+          </div>
+
           {/* Convergence Metrics Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-3.5 bg-slate-900/60 rounded-xl border border-slate-800">
-              <div className="text-xs text-slate-400">Current Epoch</div>
+              <div className="text-xs text-slate-400">Training Passes (Epochs)</div>
               <div className="text-xl font-mono font-bold text-white tabular-nums">
-                {currentEpoch} <span className="text-xs font-normal text-slate-500">/ {config.maxEpochs}</span>
+                {currentEpoch} <span className="text-xs font-normal text-slate-500">/ {config.maxEpochs} passes</span>
               </div>
-              <div className="text-[11px] text-slate-500 font-mono">
-                {currentEpoch > 0 ? `${Math.round((currentEpoch / config.maxEpochs) * 100)}% complete` : 'Ready'}
+              <div className="text-[11px] text-emerald-400 font-mono">
+                {matchesTrained.toLocaleString()} matches per pass
               </div>
             </div>
 
