@@ -1,0 +1,6 @@
+{
+  "name": "TFT Football Quantitative Engine",
+  "description": "Temporal Fusion Transformer (TFT) predictive training pipeline and backtesting studio for Club Football Match Data (2000–2026/27) with Elo sequences, market odds, and attention analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
