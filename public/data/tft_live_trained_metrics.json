@@ -1,0 +1,109 @@
+{
+  "status": "TRAINED",
+  "model_type": "TemporalFusionTransformer",
+  "dataset": "adamgbor/club-football-match-data-2000-2025",
+  "matches_trained": 35000,
+  "train_set_size": 28000,
+  "val_set_size": 7000,
+  "best_rps_loss": 0.2133,
+  "final_accuracy": 0.457,
+  "history": [
+    {
+      "epoch": 1,
+      "trainLoss": 1.279,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.0047
+    },
+    {
+      "epoch": 2,
+      "trainLoss": 1.279,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.004418
+    },
+    {
+      "epoch": 3,
+      "trainLoss": 1.2791,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.004153
+    },
+    {
+      "epoch": 4,
+      "trainLoss": 1.2791,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.003904
+    },
+    {
+      "epoch": 5,
+      "trainLoss": 1.2791,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.00367
+    },
+    {
+      "epoch": 6,
+      "trainLoss": 1.2792,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.003449
+    },
+    {
+      "epoch": 7,
+      "trainLoss": 1.2792,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.003242
+    },
+    {
+      "epoch": 8,
+      "trainLoss": 1.2792,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.003048
+    },
+    {
+      "epoch": 9,
+      "trainLoss": 1.2792,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.002865
+    },
+    {
+      "epoch": 10,
+      "trainLoss": 1.2793,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.002693
+    },
+    {
+      "epoch": 11,
+      "trainLoss": 1.2793,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.002531
+    },
+    {
+      "epoch": 12,
+      "trainLoss": 1.2793,
+      "valLoss": 1.1882,
+      "valRpsLoss": 0.2133,
+      "valAccuracy": 0.457,
+      "learningRate": 0.00238
+    }
+  ],
+  "trained_at": "2026-10-31T20:17:43.800911"
+}
